@@ -31,6 +31,20 @@
             transition: transform 0.5s;
         }
 
+        .content-static {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+            transition: transform 2s;
+            transform-style: preserve-3d;
+        }
+
+        .content-hover {
+            transform: rotateY(180deg);
+            transition: transform 0.5s;
+        }
+
         .front,
         .back {
             backface-visibility: hidden;
@@ -80,7 +94,7 @@
     </section>
     <section class="flex flex-wrap gap-10 md:gap-20 justify-center items-center p-5">
         <div class="card w-5/6 aspect-square max-w-sm -rotate-3">
-            <div class="content shadow-xl floater1">
+            <div id="cover-hover" class="shadow-xl floater1">
                 <div class="front bg-cover bg-[url('epcover.png')] h-full w-full rounded-lg absolute">
                 </div>
                 <div class="back bg-gray-800 h-full w-full rounded-lg absolute">
@@ -105,6 +119,31 @@
     <footer class="p-5 md:p-8 text-xs md:text-sm">
         Copyright &copy; 2022
     </footer>
+    <script>
+        let touch_div = document.getElementById('cover-hover');
+        let is_touch_device = false;
+        let touchstart_event_listener; 	// save the event listeners, if you want to delete them later
+        let touchend_event_listener; 		// save the event listeners, if you want to delete them later
+
+
+        if ("ontouchstart" in document.documentElement) {	// check if touch is enabled on device
+            is_touch_device = true;
+        }
+
+        if (is_touch_device) {
+            touch_div.classList.add('content-static');	// adds a class to style the div for touch devices
+
+            touch_div.addEventListener('touchstart', touchstart_event_listener = () => {	// event listener changes the class to hovered when you put your 
+                touch_div.classList.add('content-hover');				// finger on the div
+            });
+
+            touch_div.addEventListener('touchend', touchstart_event_listener = () => {		// event listener changes the class back to not hovered when you 
+                touch_div.classList.remove('content-hover');				// release your finger
+            });
+        } else {
+            touch_div.classList.add('content');	// adds a class to style the div for mouse devices
+        }
+    </script>
 </body>
 
 </html>
