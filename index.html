@@ -31,6 +31,12 @@
             perspective: 1000px;
             transform: perspective(878px) rotateX(9deg) rotate(356deg);
             user-select: none !important;
+            cursor: pointer;
+        }
+
+        .card:hover .hint {
+            transform: rotateY(10deg) rotate(0deg);
+            transition: transform 1s;
         }
 
         .content {
@@ -42,21 +48,7 @@
             transform-style: preserve-3d;
         }
 
-        .card:hover .content {
-            transform: rotateY(180deg);
-            transition: transform 0.5s;
-        }
-
-        .content-static {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-
-            transition: transform 2s;
-            transform-style: preserve-3d;
-        }
-
-        .content-hover {
+        .card .test {
             transform: rotateY(180deg);
             transition: transform 0.5s;
         }
@@ -91,10 +83,6 @@
             }
         }
 
-        .floater {
-            animation: float 12s ease-in-out infinite;
-        }
-
     </style>
 </head>
 
@@ -109,10 +97,10 @@
     </section>
     <section class="flex flex-wrap gap-10 md:gap-20 justify-center items-center p-5">
         <div class="card w-5/6 aspect-square max-w-sm -rotate-3 relative">
-            <div class="absolute -top-3 -left-4 z-10 sticker">
-                FLIP ME!
-            </div>
-            <div id="cover-hover" class="shadow-xl floater1">
+            <div id="cover-hover" class="shadow-xl floater1 content hint">
+                <div id="sticker" class="absolute -top-3 -left-4 z-10 sticker">
+                    FLIP ME!
+                </div>
                 <div class="front bg-cover bg-[url('epcover.png')] h-full w-full rounded-lg absolute">
                 </div>
                 <div class="back bg-gray-800 h-full w-full rounded-lg absolute">
@@ -137,29 +125,21 @@
         &copy; Nuclear Worship // Makke Digital Works 2022
     </footer>
     <script>
-        let touch_div = document.getElementById('cover-hover');
-        let is_touch_device = false;
-        let touchstart_event_listener; 	// save the event listeners, if you want to delete them later
-        let touchend_event_listener; 		// save the event listeners, if you want to delete them later
+        let element = document.getElementById('cover-hover');
+        let sticker = document.getElementById('sticker');
+        let boolean = false;
 
-
-        if ("ontouchstart" in document.documentElement) {	// check if touch is enabled on device
-            is_touch_device = true;
-        }
-
-        if (is_touch_device) {
-            touch_div.classList.add('content-static');	// adds a class to style the div for touch devices
-
-            touch_div.addEventListener('touchstart', touchstart_event_listener = () => {	// event listener changes the class to hovered when you put your 
-                touch_div.classList.add('content-hover');				// finger on the div
-            });
-
-            touch_div.addEventListener('touchend', touchstart_event_listener = () => {		// event listener changes the class back to not hovered when you 
-                touch_div.classList.remove('content-hover');				// release your finger
-            });
-        } else {
-            touch_div.classList.add('content');	// adds a class to style the div for mouse devices
-        }
+        element.addEventListener('click', function() {
+            if(boolean) {
+                element.classList.remove('test');
+                element.classList.add('hint');
+            } else {
+                element.classList.remove('hint');
+                element.classList.add('test');
+                sticker.classList.add('hidden');
+            }
+            boolean = !boolean;
+        });
     </script>
 </body>
 
